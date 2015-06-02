@@ -56,11 +56,11 @@
           In this config, all brokers are connected to each other.
         -->
 
-  <% if @mq_cluster_brokers_real.length > 1 -%>
+<% if @mq_cluster_brokers_real.length > 1 -%>
         <networkConnectors>
   <%- @mq_cluster_brokers_real.each do |broker| -%>
     <%- if broker != mq_broker_name -%>
-          <networkConnector uri="static:(tcp://<%= broker %>:61616)" duplex="false" </networkConnector>
+          <networkConnector uri="static:(tcp://<%= broker %>:61616)" duplex="true" </networkConnector>
     <%- end -%>
   <%- end -%>
         </networkConnectors>
