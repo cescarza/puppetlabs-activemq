@@ -60,7 +60,7 @@
         <networkConnectors>
   <%- @mq_cluster_brokers_real.each do |broker| -%>
     <%- if broker != mq_broker_name -%>
-          <networkConnector uri="static:(tcp://<%= broker %>:61616)" duplex="true" </networkConnector>
+			<networkConnector uri="static:(tcp://<%= broker %>:61616)" duplex="true" </networkConnector>
     <%- end -%>
   <%- end -%>
         </networkConnectors>
@@ -92,12 +92,12 @@
           http://activemq.apache.org/producer-flow-control.html
         -->
         <systemUsage>
-            <systemUsage>
+            <systemUsage sendFailIfNoSpaceAfterTimeout="5000">
                 <memoryUsage>
-                    <memoryUsage limit="20 mb"/>
+                    <memoryUsage limit="1200 mb"/>
                 </memoryUsage>
                 <storeUsage>
-                    <storeUsage limit="1 gb"/>
+                    <storeUsage limit="5 gb"/>
                 </storeUsage>
                 <tempUsage>
                     <tempUsage limit="100 mb"/>
