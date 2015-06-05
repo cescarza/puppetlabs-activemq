@@ -60,13 +60,13 @@
         <networkConnectors>
   <%- @mq_cluster_brokers_real.each do |broker| -%>
     <%- if broker != mq_broker_name -%>
-			<networkConnector uri="static:(tcp://<%= broker %>:61616)" duplex="true" </networkConnector>
+            <networkConnector uri="static:(tcp://<%= broker %>:61616)" duplex="true" />
     <%- end -%>
   <%- end -%>
         </networkConnectors>
 <%- end -%>
 
-		<!-- 
+        <!--
           Configure message persistence for the broker. The default persistence
           mechanism is the KahaDB store (identified by the kahaDB tag). 
           For more information, see: 
