@@ -14,7 +14,7 @@
     </bean>
 <% end -%>
 
-    <broker xmlns="http://activemq.apache.org/schema/core" brokerName="<%= @mq_broker_name %>" dataDirectory="${activemq.base}/data">
+    <broker xmlns="http://activemq.apache.org/schema/core" brokerName="<%= @mq_broker_name %>" dataDirectory="/opt/data/activemq/<%= @mq_broker_name %>">
         <!--
           For better performances use VM cursor and small memory limit.
           For more information, see:
@@ -74,7 +74,7 @@
           http://activemq.apache.org/persistence.html 
         -->
         <persistenceAdapter>
-            <kahaDB directory="${activemq.base}/data/kahadb"/>
+            <kahaDB directory="/opt/data/activemq/<%= @mq_broker_name %>"/>
         </persistenceAdapter>
         
         <plugins>
