@@ -125,15 +125,9 @@
         </jmsBridgeConnectors>
     </broker>
 
-<% if @mq_cluster_brokers_real.length > 1 -%>
-    <%- @mq_cluster_brokers_real.each do |broker| -%>
-        <%- if broker != mq_broker_name -%>    	
     <bean id="LeadManagerActiveMQBroker" class="org.apache.activemq.ActiveMQConnectionFactory">
-        <property name="brokerURL" value="failover:(tcp://localhost:61616,tcp://<%= broker %>:61616)" />
+        <property name="brokerURL" value="failover:(tcp://localhost:61616)" />
     </bean>
-        <%- end -%>
-    <%- end -%>
-<%- end -%>	
 
 <% if @webconsole_real -%>
       <import resource="jetty.xml"/>
