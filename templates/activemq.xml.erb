@@ -115,7 +115,20 @@
               <transportConnector name="openwire" uri="tcp://0.0.0.0:61616" updateClusterClients="true" updateClusterClientsOnRemove="true" rebalanceClusterClients="true"/>
               <transportConnector name="stomp+nio" uri="stomp+nio://0.0.0.0:61613" />
         </transportConnectors>
+		
+		<jmsBridgeConnectors>
+          <jmsQueueConnector outboundQueueConnectionFactory="#LeadManagerActiveMQBroker">
+                <outboundQueueBridges>
+                          <outboundQueueBridge outboundQueueName="inbound.OEM.FirstContact.Queue" localQueueName="LEAD_MANAGER.FirstContactOccurred"/>
+                </outboundQueueBridges>
+         </jmsQueueConnector>
+       </jmsBridgeConnectors>
+		
     </broker>
+	
+	<bean id="LeadManagerActiveMQBroker" class="org.apache.activemq.ActiveMQConnectionFactory">
+         <property name="brokerURL" value="failover:(tcp://localhost:61616,tcp://<%= broker %>:61616)" />
+    </bean>
 
 <% if @webconsole_real -%>
       <import resource="jetty.xml"/>
