@@ -87,10 +87,10 @@
         <systemUsage>
             <systemUsage>
                 <memoryUsage>
-                    <memoryUsage limit="3900 mb"/>
+                    <memoryUsage limit="1 gb"/>
                 </memoryUsage>
                 <storeUsage>
-                    <storeUsage limit="50 gb"/>
+                    <storeUsage limit="5 gb"/>
                 </storeUsage>
                 <tempUsage>
                     <tempUsage limit="100 mb"/>
@@ -105,13 +105,7 @@
           http://activemq.apache.org/configuring-transports.html
         -->
         <transportConnectors>
-       	    <% if @mq_cluster_brokers_real.length > 1 -%>
-			<%- @mq_cluster_brokers_real.each do |broker| -%>
-			<%- if broker != mq_broker_name -%>
-			<transportConnector name="tcp" uri="tcp://0.0.0.0:61616" discoveryUri="multicast://<%= broker %>:6155?group=LeadManagerSandboxAMQMCastGroup"/>
-			<%- end -%>
-			<%- end -%>
-			<%- end -%>
+            <transportConnector name="openwire" uri="tcp://0.0.0.0:61616" />
             <transportConnector name="stomp+nio" uri="stomp+nio://0.0.0.0:61612" />
         </transportConnectors>
     </broker>
