@@ -56,16 +56,10 @@
           In this config, all brokers are connected to each other.
         -->
 
-        <% if @mq_cluster_brokers_real.length > 1 -%>
         <networkConnectors>
-            <%- @mq_cluster_brokers_real.each do |broker| -%>
-            <%- if broker != mq_broker_name -%>
-			<networkConnector uri="multicast://<%= broker %>:6155?group=LeadManagerSandboxAMQMCastGroup"/>
-            <%- end -%>
-            <%- end -%>
+            <networkConnector uri="multicast://239.255.2.3:6155?group=LeadManagerAMQMCastGroup"/>
         </networkConnectors>
-        <%- end -%>
-
+        
         <!--
           Configure message persistence for the broker. The default persistence
           mechanism is the KahaDB store (identified by the kahaDB tag).
@@ -77,7 +71,6 @@
             <kahaDB directory="/opt/data/activemq/<%= @mq_broker_name %>/kahadb"/>
         </persistenceAdapter>
 
-  
         <!--
           The systemUsage controls the maximum amount of space the broker will
           use before slowing down producers. For more information, see:
@@ -105,8 +98,8 @@
           http://activemq.apache.org/configuring-transports.html
         -->
         <transportConnectors>
-            <transportConnector name="openwire" uri="tcp://0.0.0.0:61616" />
-            <transportConnector name="stomp+nio" uri="stomp+nio://0.0.0.0:61612" />
+            <transportConnector name="tcp" uri="tcp://0.0.0.0:61616" discoveryUri="multicast://239.255.2.3:6155?group=LeadManagerAMQMCastGroup"/>
+			<transportConnector name="stomp+nio" uri="stomp+nio://0.0.0.0:61612" />
         </transportConnectors>
     </broker>
 
