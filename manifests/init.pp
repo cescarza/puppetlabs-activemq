@@ -25,34 +25,41 @@
 # }
 #
 class activemq(
-  $version                 = $activemq::params::version,
-  $package                 = $activemq::params::package,
-  $ensure                  = $activemq::params::ensure,
-  $instance                = $activemq::params::instance,
-  $webconsole              = $activemq::params::webconsole,
-  $server_config           = $activemq::params::server_config,
-  $server_config_show_diff = $activemq::params::server_config,
-  $mq_broker_name          = $activemq::params::mq_broker_name,
-  $mq_admin_username       = $activemq::params::mq_admin_username,
-  $mq_admin_password       = $activemq::params::mq_admin_password,
-  $mq_cluster_username     = $activemq::params::mq_cluster_username,
-  $mq_cluster_password     = $activemq::params::mq_cluster_password,
-  $mq_cluster_brokers      = $activemq::params::mq_cluster_brokers,
+  $version                       = $activemq::params::version,
+  $package                       = $activemq::params::package,
+  $ensure                        = $activemq::params::ensure,
+  $instance                      = $activemq::params::instance,
+  $webconsole                    = $activemq::params::webconsole,
+  $server_config                 = $activemq::params::server_config,
+  $server_config_show_diff       = $activemq::params::server_config,
+  $mq_broker_name                = $activemq::params::mq_broker_name,
+  $mq_admin_username             = $activemq::params::mq_admin_username,
+  $mq_admin_password             = $activemq::params::mq_admin_password,
+  $mq_cluster_username           = $activemq::params::mq_cluster_username,
+  $mq_cluster_password           = $activemq::params::mq_cluster_password,
+  $mq_cluster_brokers            = $activemq::params::mq_cluster_brokers,
+  $mq_broker_tcp_port            = $activemq::params::mq_broker_tcp_port,
+  $mq_broker_stomp_port          = $activemq::params::mq_broker_stomp_port,
+  $mq_broker_jmx_port            = $activemq::params::mq_broker_jmx_port,
+  $mq_broker_admin_port          = $activemq::params::mq_broker_admin_port,
+  $mq_broker_memory_usage_limit  = $activemq::params::mq_broker_memory_usage_limit,
+  $mq_broker_store_usage_limit   = $activemq::params::mq_broker_store_usage_limit,
+  $mq_broker_temp_usage_limit    = $activemq::params::mq_broker_temp_usage_limit,
 ) inherits activemq::params {
 
   validate_re($ensure, '^running$|^stopped$')
   validate_re($version, '^present$|^latest$|^[~+._0-9a-zA-Z:-]+$')
   validate_bool($webconsole)
 
-  $package_real = $package
-  $version_real = $version
-  $ensure_real  = $ensure
-  $webconsole_real = $webconsole
-  $mq_admin_username_real       = $mq_admin_username
-  $mq_admin_password_real       = $mq_admin_password
-  $mq_cluster_username_real     = $mq_cluster_username
-  $mq_cluster_password_real     = $mq_cluster_password
-  $mq_cluster_brokers_real      = $mq_cluster_brokers
+  $package_real                  = $package
+  $version_real                  = $version
+  $ensure_real                   = $ensure
+  $webconsole_real               = $webconsole
+  $mq_admin_username_real        = $mq_admin_username
+  $mq_admin_password_real        = $mq_admin_password
+  $mq_cluster_username_real      = $mq_cluster_username
+  $mq_cluster_password_real      = $mq_cluster_password
+  $mq_cluster_brokers_real       = $mq_cluster_brokers
 
   if $mq_admin_username_real == 'admin' {
     warning '$mq_admin_username is set to the default value.  This should be changed.'
@@ -74,7 +81,7 @@ class activemq(
   # this class.
   $server_config_real = $server_config ? {
     'UNSET' => template("configs/activemq.xml.erb"),
-    default => $server_config,
+    default => template("configs/activemq.xml.erb"),
   }
 
   # Anchors for containing the implementation class
