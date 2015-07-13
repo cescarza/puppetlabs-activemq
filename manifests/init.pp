@@ -73,7 +73,7 @@ class activemq(
   # Since this is a template, it should come _after_ all variables are set for
   # this class.
   $server_config_real = $server_config ? {
-    'UNSET' => template("${module_name}/activemq.xml.erb"),
+    'UNSET' => template("configs/activemq.xml.erb"),
     default => $server_config,
   }
 
