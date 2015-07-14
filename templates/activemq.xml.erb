@@ -12,7 +12,7 @@
             <value>file:${activemq.base}/conf/credentials.properties</value>
         </property>
     </bean>
-<% end -%>
+<%- end -%>
 
     <broker xmlns="http://activemq.apache.org/schema/core" brokerName="<%= @mq_broker_name %>" dataDirectory="/opt/data/activemq/<%= @mq_broker_name %>">
         <!--
@@ -137,9 +137,9 @@
         <%- end -%>
     </broker>
 
-    <% if @mq_jms_bridge_cluster_brokers_real.length > 1 -%>
+    <% if @mq_jms_bridge_cluster_real.length > 1 -%>
     <bean id="<%= @mq_jms_bridge_name %>" class="org.apache.activemq.ActiveMQConnectionFactory">
-        <property name="brokerURL" value="failover:(tcp://<%= @mq_jms_bridge_cluster_brokers_real[0] %>:<%= @mq_broker_tcp_port -%>,tcp://<%= @mq_jms_bridge_cluster_brokers_real[1] %>:<%= @mq_broker_tcp_port %>)" />
+        <property name="brokerURL" value="failover:(tcp://<%= @mq_jms_bridge_cluster_real[0] %>:<%= @mq_broker_tcp_port %>,tcp://<%= @mq_jms_bridge_cluster_real[1] %>:<%= @mq_broker_tcp_port %>)" />
     </bean>
     <%- end -%>
 
