@@ -55,11 +55,11 @@
           Configure network connectors for a network of brokers. 
           In this config, all brokers are connected to each other.
         -->
-        <% if @mq_broker_multicast_conn_real -%>
+<% if @mq_broker_multicast_conn_real -%>
         <networkConnectors>
             <networkConnector uri="multicast://239.255.2.3:6155?group=<%= @mq_broker_multicast_group %>"/>
         </networkConnectors>
-        <%- end -%>
+<%- end -%>
 
 <% if @mq_cluster_brokers_real.length > 1 -%>
         <networkConnectors>
@@ -118,7 +118,7 @@
         </transportConnectors>
 
 
-        <% if @mq_broker_jms_bridge_conn_real -%>
+<% if @mq_broker_jms_bridge_conn_real -%>
         <jmsBridgeConnectors>
             <jmsQueueConnector outboundQueueConnectionFactory="#<%= @mq_jms_bridge_name %>">
                 <outboundQueueBridges>
@@ -126,7 +126,7 @@
                 </outboundQueueBridges>
             </jmsQueueConnector>
         </jmsBridgeConnectors>
-        <%- end -%>
+<%- end -%>
     </broker>
 
     <% if @mq_jms_bridge_cluster_real.length > 1 -%>
@@ -136,6 +136,6 @@
     <%- end -%>
 
 <% if @webconsole_real -%>
-      <import resource="jetty.xml"/>
+    <import resource="jetty.xml"/>
 <%- end -%>
 </beans>
