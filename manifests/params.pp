@@ -14,8 +14,8 @@ class activemq::params {
   $mq_cluster_brokers            = []
   $mq_broker_tcp_port            = '61616'
   $mq_broker_stomp_port          = '61612'
-  $mq_broker_memory_usage_limit  = '20mb'
-  $mq_broker_store_usage_limit   = '24gb'
+  $mq_broker_memory_usage_limit  = '1gb'
+  $mq_broker_store_usage_limit   = '5gb'
   $mq_broker_temp_usage_limit    = '100mb'
   $mq_broker_multicast_conn      =  false
   $mq_broker_multicast_group     =  'UNSET'
