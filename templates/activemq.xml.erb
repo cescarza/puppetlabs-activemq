@@ -55,12 +55,17 @@
           Configure network connectors for a network of brokers. 
           In this config, all brokers are connected to each other.
         -->
+        <% if @mq_broker_multicast_conn_real -%>
+        <networkConnectors>
+            <networkConnector uri="multicast://239.255.2.3:6155?group=<%= @mq_broker_multicast_group %>"/>
+        </networkConnectors>
+        <%- end -%>
 
 <% if @mq_cluster_brokers_real.length > 1 -%>
         <networkConnectors>
   <%- @mq_cluster_brokers_real.each do |broker| -%>
     <%- if broker != mq_broker_name -%>
-            <networkConnector uri="static:(tcp://<%= broker %>:61616)" duplex="true" />
+            <networkConnector uri="static:(tcp://<%= broker %>:<%= @mq_broker_tcp_port %>)" duplex="true" />
     <%- end -%>
   <%- end -%>
         </networkConnectors>
@@ -92,15 +97,15 @@
           http://activemq.apache.org/producer-flow-control.html
         -->
         <systemUsage>
-            <systemUsage sendFailIfNoSpaceAfterTimeout="5000">
+            <systemUsage>
                 <memoryUsage>
-                    <memoryUsage limit="3900 mb"/>
+                    <memoryUsage limit="<%= @mq_broker_memory_usage_limit %>"/>
                 </memoryUsage>
                 <storeUsage>
-                    <storeUsage limit="50 gb"/>
+                    <storeUsage limit="<%= @mq_broker_store_usage_limit %>"/>
                 </storeUsage>
                 <tempUsage>
-                    <tempUsage limit="100 mb"/>
+                    <tempUsage limit="<%= @mq_broker_temp_usage_limit %>"/>
                 </tempUsage>
             </systemUsage>
         </systemUsage>
@@ -112,24 +117,33 @@
           http://activemq.apache.org/configuring-transports.html 
         -->
         <transportConnectors>
-            <transportConnector name="openwire" uri="tcp://0.0.0.0:61616" updateClusterClients="true" updateClusterClientsOnRemove="true"/>
-            <transportConnector name="stomp+nio" uri="stomp+nio://0.0.0.0:61613" />
+            <% if @mq_broker_multicast_conn_real -%>
+            <transportConnector name="tcp" uri="tcp://0.0.0.0:<%= @mq_broker_tcp_port %>" discoveryUri="multicast://239.255.2.3:6155?group=<%= @mq_broker_multicast_group %>"/>
+            <%- else -%>
+            <transportConnector name="openwire" uri="tcp://0.0.0.0:<%= @mq_broker_tcp_port %>" />
+            <%- end -%>
+            <transportConnector name="stomp+nio" uri="stomp+nio://0.0.0.0:<%= @mq_broker_stomp_port %>" />
         </transportConnectors>
 
+
+        <% if @mq_broker_jms_bridge_conn_real -%>
         <jmsBridgeConnectors>
-            <jmsQueueConnector outboundQueueConnectionFactory="#LeadManagerActiveMQBroker">
+            <jmsQueueConnector outboundQueueConnectionFactory="#<%= @mq_jms_bridge_name %>">
                 <outboundQueueBridges>
-                    <outboundQueueBridge outboundQueueName="inbound.OEM.FirstContact.Queue" localQueueName="LEAD_MANAGER.FirstContactOccurred"/>
+                    <outboundQueueBridge outboundQueueName="<%= @mq_jms_bridge_outbound_queue %>" localQueueName="<%= @mq_jms_bridge_local_queue %>"/>
                 </outboundQueueBridges>
             </jmsQueueConnector>
         </jmsBridgeConnectors>
+        <%- end -%>
     </broker>
 
-    <bean id="LeadManagerActiveMQBroker" class="org.apache.activemq.ActiveMQConnectionFactory">
-        <property name="brokerURL" value="failover:(tcp://localhost:61616)" />
+    <% if @mq_jms_bridge_cluster_brokers_real.length > 1 -%>
+    <bean id="<%= @mq_jms_bridge_name %>" class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL" value="failover:(tcp://<%= @mq_jms_bridge_cluster_brokers_real[0] %>:<%= @mq_broker_tcp_port -%>,tcp://<%= @mq_jms_bridge_cluster_brokers_real[1] %>:<%= @mq_broker_tcp_port %>)" />
     </bean>
+    <%- end -%>
 
 <% if @webconsole_real -%>
       <import resource="jetty.xml"/>
-<% end -%>
+<%- end -%>
 </beans>

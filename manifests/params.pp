@@ -14,11 +14,16 @@ class activemq::params {
   $mq_cluster_brokers            = []
   $mq_broker_tcp_port            = '61616'
   $mq_broker_stomp_port          = '61612'
-  $mq_broker_jmx_port            = '1099'
-  $mq_broker_admin_port          = '8161'
   $mq_broker_memory_usage_limit  = '20mb'
   $mq_broker_store_usage_limit   = '24gb'
   $mq_broker_temp_usage_limit    = '100mb'
+  $mq_broker_multicast_conn      =  false
+  $mq_broker_multicast_group     =  'UNSET'
+  $mq_jms_bridge_conn            =  false
+  $mq_jms_bridge_name            =  'UNSET'
+  $mq_jms_bridge_outbound_queue  =  'UNSET'
+  $mq_jms_bridge_local_queue     =  'UNSET'
+  $mq_jms_bridge_cluster         =  []
 
   # Debian does not include the webconsole
   case $::osfamily {

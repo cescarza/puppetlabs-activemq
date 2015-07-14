@@ -40,26 +40,47 @@ class activemq(
   $mq_cluster_brokers            = $activemq::params::mq_cluster_brokers,
   $mq_broker_tcp_port            = $activemq::params::mq_broker_tcp_port,
   $mq_broker_stomp_port          = $activemq::params::mq_broker_stomp_port,
-  $mq_broker_jmx_port            = $activemq::params::mq_broker_jmx_port,
-  $mq_broker_admin_port          = $activemq::params::mq_broker_admin_port,
   $mq_broker_memory_usage_limit  = $activemq::params::mq_broker_memory_usage_limit,
   $mq_broker_store_usage_limit   = $activemq::params::mq_broker_store_usage_limit,
   $mq_broker_temp_usage_limit    = $activemq::params::mq_broker_temp_usage_limit,
+  $mq_broker_multicast_conn      = $activemq::params::mq_broker_multicast_conn,
+  $mq_broker_multicast_group     = $activemq::params::mq_broker_multicast_group,
+  $mq_jms_bridge_conn            = $activemq::params::mq_jms_bridge_conn,
+  $mq_jms_bridge_name            = $activemq::params::mq_jms_bridge_name,
+  $mq_jms_bridge_outbound_queue  = $activemq::params::mq_jms_bridge_outbound_queue,
+  $mq_jms_bridge_local_queue     = $activemq::params::mq_jms_bridge_local_queue,
+  $mq_jms_bridge_cluster         = $activemq::params::mq_jms_bridge_cluster,
+
 ) inherits activemq::params {
 
   validate_re($ensure, '^running$|^stopped$')
   validate_re($version, '^present$|^latest$|^[~+._0-9a-zA-Z:-]+$')
   validate_bool($webconsole)
+  validate_bool($mq_broker_multicast_conn)
+  validate_bool($mq_jms_bridge_conn)
 
-  $package_real                  = $package
-  $version_real                  = $version
-  $ensure_real                   = $ensure
-  $webconsole_real               = $webconsole
-  $mq_admin_username_real        = $mq_admin_username
-  $mq_admin_password_real        = $mq_admin_password
-  $mq_cluster_username_real      = $mq_cluster_username
-  $mq_cluster_password_real      = $mq_cluster_password
-  $mq_cluster_brokers_real       = $mq_cluster_brokers
+  $package_real                       = $package
+  $version_real                       = $version
+  $ensure_real                        = $ensure
+  $webconsole_real                    = $webconsole
+  $mq_admin_username_real             = $mq_admin_username
+  $mq_admin_password_real             = $mq_admin_password
+  $mq_cluster_username_real           = $mq_cluster_username
+  $mq_cluster_password_real           = $mq_cluster_password
+  $mq_cluster_brokers_real            = $mq_cluster_brokers
+  $mq_broker_tcp_port_real            = $mq_broker_tcp_port
+  $mq_broker_stomp_port_real          = $mq_broker_stomp_port
+  $mq_broker_memory_usage_limit_real  = $mq_broker_memory_usage_limit
+  $mq_broker_store_usage_limit_real   = $mq_broker_store_usage_limit
+  $mq_broker_temp_usage_limit_real    = $mq_broker_temp_usage_limit
+  $mq_broker_multicast_conn_real      = $mq_broker_multicast_conn
+  $mq_broker_multicast_group_real     = $mq_broker_multicast_group
+  $mq_jms_bridge_conn_real            = $mq_jms_bridge_conn
+  $mq_jms_bridge_name_real            = $mq_jms_bridge_name
+  $mq_jms_bridge_local_queue_real     = $mq_jms_bridge_local_queue
+  $mq_jms_bridge_outbound_queue_real  = $mq_jms_bridge_outbound_queue
+  $mq_jms_bridge_cluster_real         = $mq_jms_bridge_cluster
+
 
   if $mq_admin_username_real == 'admin' {
     warning '$mq_admin_username is set to the default value.  This should be changed.'
@@ -80,8 +101,8 @@ class activemq(
   # Since this is a template, it should come _after_ all variables are set for
   # this class.
   $server_config_real = $server_config ? {
-    'UNSET' => template("configs/activemq.xml.erb"),
-    default => template("configs/activemq.xml.erb"),
+    'UNSET' => template("${module_name}/activemq.xml.erb"),
+    default => $server_config,
   }
 
   # Anchors for containing the implementation class
