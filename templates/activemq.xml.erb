@@ -81,14 +81,6 @@
         <persistenceAdapter>
             <kahaDB directory="/opt/data/activemq/<%= @mq_broker_name %>"/>
         </persistenceAdapter>
-        
-        <plugins>
-          <!--
-            Enable the statisticsBrokerPlugin to allow ActiveMQ to collect
-            statistics.
-          -->
-          <statisticsBrokerPlugin/>
-        </plugins>
 
         <!--
           The systemUsage controls the maximum amount of space the broker will 
