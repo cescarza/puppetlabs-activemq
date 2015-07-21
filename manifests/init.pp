@@ -80,6 +80,7 @@ class activemq(
   $mq_jms_bridge_local_queue_real     = $mq_jms_bridge_local_queue
   $mq_jms_bridge_outbound_queue_real  = $mq_jms_bridge_outbound_queue
   $mq_jms_bridge_cluster_real         = $mq_jms_bridge_cluster
+  $mq_broker_mngmt_context_real       = $mq_broker_mngmt_context
 
 
   if $mq_admin_username_real == 'admin' {

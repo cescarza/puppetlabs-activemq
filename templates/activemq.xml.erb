@@ -48,7 +48,7 @@
           http://activemq.apache.org/jmx.html 
         -->
         <managementContext>
-            <managementContext createConnector="false"/>
+            <managementContext createConnector="<%= @mq_broker_mngmt_context %>"/>
         </managementContext>
 
         <!--
@@ -109,11 +109,11 @@
           http://activemq.apache.org/configuring-transports.html 
         -->
         <transportConnectors>
-            <% if @mq_broker_multicast_conn_real -%>
+<% if @mq_broker_multicast_conn_real -%>
             <transportConnector name="tcp" uri="tcp://0.0.0.0:<%= @mq_broker_tcp_port %>" discoveryUri="multicast://239.255.2.3:6155?group=<%= @mq_broker_multicast_group %>"/>
-            <%- else -%>
+<%- else -%>
             <transportConnector name="openwire" uri="tcp://0.0.0.0:<%= @mq_broker_tcp_port %>" />
-            <%- end -%>
+<%- end -%>
             <transportConnector name="stomp+nio" uri="stomp+nio://0.0.0.0:<%= @mq_broker_stomp_port %>" />
         </transportConnectors>
 
