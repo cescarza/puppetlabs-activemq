@@ -45,6 +45,7 @@ class activemq(
   $mq_broker_temp_usage_limit    = $activemq::params::mq_broker_temp_usage_limit,
   $mq_broker_multicast_conn      = $activemq::params::mq_broker_multicast_conn,
   $mq_broker_multicast_group     = $activemq::params::mq_broker_multicast_group,
+  $mq_broker_mngmt_context       = $activemq::params::mq_broker_mngmt_context,
   $mq_jms_bridge_conn            = $activemq::params::mq_jms_bridge_conn,
   $mq_jms_bridge_name            = $activemq::params::mq_jms_bridge_name,
   $mq_jms_bridge_outbound_queue  = $activemq::params::mq_jms_bridge_outbound_queue,
